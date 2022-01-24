@@ -1,11 +1,11 @@
 package forex
 
 import cats.effect.Sync
-import io.circe.generic.extras.decoding.{ EnumerationDecoder, UnwrappedDecoder }
-import io.circe.generic.extras.encoding.{ EnumerationEncoder, UnwrappedEncoder }
-import io.circe.{ Decoder, Encoder }
-import org.http4s.{ EntityDecoder, EntityEncoder }
+import io.circe.generic.extras.decoding.{EnumerationDecoder, UnwrappedDecoder}
+import io.circe.generic.extras.encoding.{EnumerationEncoder, UnwrappedEncoder}
+import io.circe.{Decoder, Encoder}
 import org.http4s.circe._
+import org.http4s.{EntityDecoder, EntityEncoder}
 
 package object http {
 
