@@ -68,7 +68,10 @@ class OneFrameApiService[F[_] : Concurrent : Mode](cacheConfig: CacheConfig, one
 
   private def updateIfNotPresent(pair: Rate.Pair, rate: Option[Rate]): F[Error Either Rate] = {
     rate match {
-      case Some(e) => Sync[F].pure(Either.right[Error, Rate](e))
+      case Some(e) =>
+        val diffMin = Duration.between(e.timestamp.value, OffsetDateTime.now(ZoneOffset.UTC)).toMinutes
+        if(diffMin < oneFrameApiConfig.timeout.toMinutes) Sync[F].pure(Either.right[Error, Rate](e))
+        else updateAndGetFromApi(pair, caffeineCache)
       case None => updateAndGetFromApi(pair, caffeineCache)
     }
   }

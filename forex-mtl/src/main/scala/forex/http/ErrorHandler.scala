@@ -7,6 +7,7 @@ import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 import io.circe.syntax._
 import org.http4s._
 import org.http4s.dsl.Http4sDsl
+import sttp.client.SttpClientException.ConnectException
 
 class ErrorHandler[F[_]](implicit M: MonadError[F, Exception]) extends Http4sDsl[F] {
 
@@ -19,6 +20,8 @@ class ErrorHandler[F[_]](implicit M: MonadError[F, Exception]) extends Http4sDsl
       InternalServerError(ErrorResponse(msg).asJson)
     case _: MatchError =>
       BadRequest(ErrorResponse("Not a valid currency, please validate the query params").asJson)
+    case _: ConnectException =>
+      ServiceUnavailable(ErrorResponse("Forex service is down, though the proxy is active").asJson)
     case ex =>
       ex.printStackTrace()
       NotFound(ErrorResponse("Route doesn't exist").asJson)

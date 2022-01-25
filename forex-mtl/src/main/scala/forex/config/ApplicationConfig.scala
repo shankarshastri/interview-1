@@ -16,4 +16,4 @@ case class HttpConfig(
 
 case class CacheConfig(expiryTime: FiniteDuration, size: Long)
 
-case class OneFrameServiceConfig(url: String, token: String)
+case class OneFrameServiceConfig(url: String, token: String, timeout: FiniteDuration)
